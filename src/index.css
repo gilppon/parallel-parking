@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Black Han Sans", "Do Hyeon", "Apple SD Gothic Neo", "Malgun Gothic", "Arial Black", system-ui, sans-serif;
+  --font-body: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --animate-shake: shake 0.5s linear infinite;
+  --animate-siren: siren 0.32s steps(1) infinite;
+  --animate-pop: pop 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  --animate-floaty: floaty 2.4s ease-in-out infinite;
+  --animate-blink: blink 0.9s ease-in-out infinite;
+  --animate-slide-up: slide-up 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: #05060a;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  color: #f4f6fb;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+canvas {
+  display: block;
+  image-rendering: auto;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  20% { transform: translate(-6px, 3px) rotate(-1.2deg); }
+  40% { transform: translate(5px, -4px) rotate(1deg); }
+  60% { transform: translate(-4px, -2px) rotate(-0.8deg); }
+  80% { transform: translate(6px, 4px) rotate(1.2deg); }
+}
+
+@keyframes siren {
+  0% { box-shadow: inset 0 0 160px 30px rgba(255, 30, 30, 0.75); }
+  50% { box-shadow: inset 0 0 160px 30px rgba(40, 90, 255, 0.75); }
+}
+
+@keyframes pop {
+  0% { transform: scale(0.4); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+@keyframes slide-up {
+  0% { transform: translateY(24px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.text-outline {
+  -webkit-text-stroke: 2px rgba(0, 0, 0, 0.85);
+  paint-order: stroke fill;
+}
+
+.glass {
+  background: linear-gradient(180deg, rgba(20, 24, 38, 0.82), rgba(10, 12, 22, 0.86));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.neon-text {
+  text-shadow: 0 0 8px currentColor, 0 0 22px currentColor;
+}
+
+::-webkit-scrollbar { width: 0; height: 0; }
