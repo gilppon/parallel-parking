@@ -1,8 +1,26 @@
 @import "tailwindcss";
 
+/* Self-hosted Latin subsets: the Korean faces are dead weight now that the UI
+   is English, and self-hosting removes the external font dependency. */
+@font-face {
+  font-family: 'Anton';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/anton-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('/fonts/nunito-latin.woff2') format('woff2');
+}
+
 @theme {
-  --font-display: "Black Han Sans", "Do Hyeon", "Apple SD Gothic Neo", "Malgun Gothic", "Arial Black", system-ui, sans-serif;
-  --font-body: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: 'Anton', 'Arial Black', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --animate-shake: shake 0.5s linear infinite;
   --animate-siren: siren 0.32s steps(1) infinite;
   --animate-pop: pop 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both;
