@@ -56,7 +56,7 @@ export function Hud({ hud, coins, touch, muted, onPause, onMute, banner }: HudPr
             <div className="min-w-0">
               <div className="font-display text-[19px] leading-tight truncate">{level.name}</div>
               <div className="text-[12px] text-white/60 truncate">
-                {level.subtitle} · 여유 {Math.round(level.slackPx * 4.5)}cm
+                {level.subtitle} · {Math.round(level.slackPx * 4.5)}cm slack
               </div>
             </div>
           </div>
@@ -82,10 +82,10 @@ export function Hud({ hud, coins, touch, muted, onPause, onMute, banner }: HudPr
 
         <div className="flex items-center gap-2 pointer-events-auto">
           <CoinBadge coins={coins} />
-          <Btn tone="ghost" size="sm" onClick={onMute} aria-label="소리">
+          <Btn tone="ghost" size="sm" onClick={onMute} aria-label="Sound">
             {muted ? '🔇' : '🔊'}
           </Btn>
-          <Btn tone="ghost" size="sm" onClick={onPause} aria-label="일시정지">
+          <Btn tone="ghost" size="sm" onClick={onPause} aria-label="Pause">
             ⏸
           </Btn>
         </div>
@@ -96,31 +96,31 @@ export function Hud({ hud, coins, touch, muted, onPause, onMute, banner }: HudPr
         <div className="absolute top-[128px] left-1/2 -translate-x-1/2 text-center animate-slide-up">
           <div className="glass rounded-2xl px-6 py-3 inline-block">
             <div className="font-display text-[26px] text-lime-300 animate-blink">
-              {touch ? '▲ 가속 버튼을 눌러 출발!' : '↑ / W 키를 눌러 출발! (타이머 시작)'}
+              {touch ? '▲ Hit the GAS button to launch!' : 'Press ↑ / W to launch! (timer starts)'}
             </div>
             <div className="text-[14px] text-white/75 mt-1">{level.hint}</div>
-            {/* 터치 기기는 조작어를 모른다 → 항상 노출 */}
+            {/* touch devices don't know the shortcuts → always show them */}
             <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[13px] text-white/70">
               {touch ? (
                 <>
-                  <span>◀▶ 좌우 버튼 = 조향</span>
-                  <span>▲▼ = 가속 / 후진</span>
-                  <span>💨 = 핸드브레이크 드리프트</span>
-                  <span>⏸ = 일시정지</span>
+                  <span>◀▶ Side buttons = Steer</span>
+                  <span>▲▼ = Gas / Reverse</span>
+                  <span>💨 = Handbrake drift</span>
+                  <span>⏸ = Pause</span>
                 </>
               ) : (
                 <>
                   <span className="flex items-center gap-1">
-                    <Keycap>↑↓←→</Keycap> 운전
+                    <Keycap>↑↓←→</Keycap> Drive
                   </span>
                   <span className="flex items-center gap-1">
-                    <Keycap wide>SPACE</Keycap> 드리프트
+                    <Keycap wide>SPACE</Keycap> Drift
                   </span>
                   <span className="flex items-center gap-1">
-                    <Keycap>SHIFT</Keycap> 로켓
+                    <Keycap>SHIFT</Keycap> Rocket
                   </span>
                   <span className="flex items-center gap-1">
-                    <Keycap>R</Keycap> 재시작
+                    <Keycap>R</Keycap> Restart
                   </span>
                 </>
               )}
@@ -181,13 +181,13 @@ export function Hud({ hud, coins, touch, muted, onPause, onMute, banner }: HudPr
           <div className="flex items-center justify-between">
             <div className="font-display text-[17px] text-emerald-300">🅿 PARKING SENSOR</div>
             <div className="text-[12px] text-white/70 tabular-nums">
-              {hud.inZone ? '존 안착' : `오차 ${hud.overflowCm.toFixed(0)}cm`} · 각도 {hud.angleErrDeg.toFixed(1)}°
+              {hud.inZone ? 'IN ZONE' : `ERR ${hud.overflowCm.toFixed(0)}cm`} · ANGLE {hud.angleErrDeg.toFixed(1)}°
             </div>
           </div>
           <div className="flex gap-2 mt-2">
-            <Chip ok={hud.inZone} label="위치" />
-            <Chip ok={hud.aligned} label={`각도 ±${level.angleTolDeg}°`} />
-            <Chip ok={still} label="정지" />
+            <Chip ok={hud.inZone} label="Position" />
+            <Chip ok={hud.aligned} label={`Angle ±${level.angleTolDeg}°`} />
+            <Chip ok={still} label="Stopped" />
           </div>
           <div className="mt-2 h-2.5 rounded-full bg-black/60 overflow-hidden border border-white/15">
             <div
@@ -216,12 +216,12 @@ export function Hud({ hud, coins, touch, muted, onPause, onMute, banner }: HudPr
               </div>
             </div>
           ) : (
-            <div className="text-[12px] text-white/45 font-bold">🔒 로켓 부스터 · 차고에서 해금</div>
+            <div className="text-[12px] text-white/45 font-bold">🔒 Rocket Booster · Garage</div>
           )}
           <div className="mt-2 flex items-center gap-1.5 text-[12px] font-black">
             {hud.bumperMax > 0 ? (
               <>
-                <span className="text-cyan-300">스프링 범퍼</span>
+                <span className="text-cyan-300">Spring Bumper</span>
                 {Array.from({ length: hud.bumperMax }).map((_, i) => (
                   <span key={i} className={cn('text-[18px]', i < hud.bumperCharges ? '' : 'opacity-20 grayscale')}>
                     🌀
@@ -229,7 +229,7 @@ export function Hud({ hud, coins, touch, muted, onPause, onMute, banner }: HudPr
                 ))}
               </>
             ) : (
-              <span className="text-white/45">🔒 스프링 범퍼 · 차고에서 해금</span>
+              <span className="text-white/45">🔒 Spring Bumper · Garage</span>
             )}
           </div>
         </Panel>
@@ -237,7 +237,7 @@ export function Hud({ hud, coins, touch, muted, onPause, onMute, banner }: HudPr
 
       {!touch && ready && (
         <div className="absolute bottom-[132px] left-1/2 -translate-x-1/2 flex items-center gap-3 text-[13px] text-white/80 glass rounded-full px-5 py-2">
-          <Keycap>↑↓←→</Keycap> 운전 <Keycap wide>SPACE</Keycap> 핸드브레이크 <Keycap>SHIFT</Keycap> 로켓 <Keycap>R</Keycap> 재시작 <Keycap>ESC</Keycap> 일시정지
+          <Keycap>↑↓←→</Keycap> Drive <Keycap wide>SPACE</Keycap> Handbrake <Keycap>SHIFT</Keycap> Rocket <Keycap>R</Keycap> Restart <Keycap>ESC</Keycap> Pause
         </div>
       )}
 
@@ -311,14 +311,14 @@ export function FailBanner({ result }: { result: ResultPayload }) {
           className="font-display text-[68px] leading-none text-outline text-red-400"
           style={{ textShadow: '0 0 30px rgba(255,40,40,0.9)' }}
         >
-          {crash ? '🚨 알람 발동!! 🚨' : '⏰ TIME UP!'}
+          {crash ? '🚨 ALARM BLASTED!! 🚨' : '⏰ TIME UP!'}
         </div>
         <div className="mt-3 inline-block rounded-2xl bg-black/75 border border-red-400/60 px-6 py-3">
           <div className="font-display text-[26px] text-white">{result.message}</div>
           {result.bill && <div className="mt-1 font-display text-[22px] text-amber-300">🧾 {result.bill}</div>}
         </div>
         <div className="mt-3 text-[14px] text-white/80 animate-blink">
-          잠시 후 자동 재시작 · <b>SPACE / R</b> 로 즉시 재시작
+          Auto-restarting shortly · hit <b>SPACE / R</b> to restart now
         </div>
       </div>
     </div>
@@ -337,11 +337,11 @@ export function PauseOverlay({
   return (
     <div className="absolute inset-0 grid place-items-center bg-black/60 backdrop-blur-sm">
       <div className="glass rounded-3xl p-10 text-center animate-pop">
-        <div className="font-display text-[52px] text-white mb-6">일시정지</div>
+        <div className="font-display text-[52px] text-white mb-6">PAUSED</div>
         <div className="flex flex-col gap-4 w-[300px]">
-          <Btn size="lg" onClick={onResume}>▶ 계속하기</Btn>
-          <Btn tone="cyan" onClick={onRestart}>↺ 다시 시작</Btn>
-          <Btn tone="ghost" onClick={onMenu}>메인 메뉴</Btn>
+          <Btn size="lg" onClick={onResume}>▶ Resume</Btn>
+          <Btn tone="cyan" onClick={onRestart}>↺ Restart</Btn>
+          <Btn tone="ghost" onClick={onMenu}>Main Menu</Btn>
         </div>
       </div>
     </div>

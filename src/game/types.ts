@@ -48,7 +48,7 @@ export interface ParkedCarDef {
   angle: number;
   color: string;
   name: string;
-  /** price in 억 KRW (for funny repair bills) */
+  /** price in USD millions (for funny repair bills) */
   price: number;
 }
 
@@ -129,19 +129,19 @@ export interface ResultPayload {
 }
 
 export const NEON_COLORS: Record<string, { label: string; color: number | 'rainbow' | null; cost: number }> = {
-  none: { label: '없음', color: null, cost: 0 },
-  cyan: { label: '사이버 시안', color: 0x22e6ff, cost: 120 },
-  pink: { label: '핫 핑크', color: 0xff2fa8, cost: 120 },
-  lime: { label: '네온 라임', color: 0x7dff2a, cost: 160 },
-  gold: { label: '골드 러시', color: 0xffc933, cost: 220 },
-  rainbow: { label: '레인보우', color: 'rainbow', cost: 450 },
+  none: { label: 'None', color: null, cost: 0 },
+  cyan: { label: 'Cyber Cyan', color: 0x22e6ff, cost: 120 },
+  pink: { label: 'Hot Pink', color: 0xff2fa8, cost: 120 },
+  lime: { label: 'Neon Lime', color: 0x7dff2a, cost: 160 },
+  gold: { label: 'Gold Rush', color: 0xffc933, cost: 220 },
+  rainbow: { label: 'Rainbow', color: 'rainbow', cost: 450 },
 };
 
 export const PAINTS: { id: string; label: string; color: string }[] = [
-  { id: 'white', label: '펄 화이트', color: '#f2f5f7' },
-  { id: 'black', label: '매트 블랙', color: '#23262b' },
-  { id: 'teal', label: '민트 티일', color: '#14b8a6' },
-  { id: 'violet', label: '바이올렛', color: '#8b5cf6' },
-  { id: 'crimson', label: '크림슨', color: '#e11d48' },
-  { id: 'lemon', label: '레몬', color: '#facc15' },
+  { id: 'white', label: 'Pearl White', color: '#f2f5f7' },
+  { id: 'black', label: 'Matte Black', color: '#23262b' },
+  { id: 'teal', label: 'Mint Teal', color: '#14b8a6' },
+  { id: 'violet', label: 'Violet', color: '#8b5cf6' },
+  { id: 'crimson', label: 'Crimson', color: '#e11d48' },
+  { id: 'lemon', label: 'Lemon', color: '#facc15' },
 ];

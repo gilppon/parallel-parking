@@ -60,8 +60,8 @@ class PokiService {
   }
 
   /**
-   * gameLoadingFinished는 실제 첫 프레임이 그려진 뒤에 한 번만 호출해야 한다.
-   * (포털 로딩 게이지가 실제 준비 시점과 어긋나면 타임아웃 리젝 사유가 된다)
+   * gameLoadingFinished must be called exactly once, after the real first frame is drawn.
+   * (if the portal's loading gauge drifts from the actual ready point, that's a timeout reject)
    */
   notifyReady() {
     if (this.loadingSent) return;
@@ -81,7 +81,7 @@ class PokiService {
     this.sdk?.gameplayStop();
   }
 
-  /** SDK가 응답하지 않아 세션이 잠기지 않도록 타임아웃 폴백 */
+  /** timeout fallback so a silent SDK can't wedge the session */
   private static async withTimeout<T>(p: Promise<T>, ms: number, fallback: T): Promise<T> {
     return Promise.race([p, new Promise<T>((resolve) => window.setTimeout(() => resolve(fallback), ms))]);
   }
@@ -111,7 +111,7 @@ class PokiService {
         );
       }
     } catch {
-      /* 광고 실패는 무시 */
+      /* ad failures are ignored */
     } finally {
       audio.setAdMuted(false);
       this.adRunning = false;

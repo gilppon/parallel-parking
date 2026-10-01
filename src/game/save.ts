@@ -14,11 +14,11 @@ export interface SaveData {
   paint: string;
   fails: number;
   muted: boolean;
-  /** 해금한 슈퍼카 인덱스 (도감) */
+  /** unlocked supercar indices (collection) */
   carsOwned: number[];
-  /** 장착 중인 슈퍼카 인덱스 (기본 0) */
+  /** supercar index currently equipped (default 0) */
   carEquipped: number;
-  perfects: number; // 무사고 클리어 횟수
+  perfects: number; // crash-free clears
   lastDaily: number;
   dailyStreak: number;
   claimedMilestones: number[];
@@ -105,10 +105,10 @@ function load(): SaveData {
   }
 }
 
-/** 일일 보상 7일 사이클 (코인) */
+/** Daily reward 7-day cycle (coins) */
 export const DAILY_COINS = [40, 60, 90, 130, 190, 280, 420];
 
-/** 업적: 실패/퍼펙트/별 기준 */
+/** Achievements: fail / perfect / star milestones */
 export interface Milestone {
   key: 'stars' | 'fails' | 'perfects';
   at: number;
@@ -118,13 +118,13 @@ export interface Milestone {
 }
 
 export const MILESTONES: Milestone[] = [
-  { key: 'stars', at: 3, coins: 120, icon: '⭐', label: '별 3개' },
-  { key: 'stars', at: 9, coins: 300, icon: '⭐', label: '별 9개' },
-  { key: 'stars', at: 20, coins: 700, icon: '⭐', label: '별 20개' },
-  { key: 'perfects', at: 1, coins: 150, icon: '💎', label: 'PERFECT 1회' },
-  { key: 'perfects', at: 5, coins: 500, icon: '💎', label: 'PERFECT 5회' },
-  { key: 'fails', at: 20, coins: 150, icon: '💥', label: '골목질주 20회' },
-  { key: 'fails', at: 50, coins: 450, icon: '💥', label: '골목질주 50회' },
+  { key: 'stars', at: 3, coins: 120, icon: '⭐', label: '3 stars' },
+  { key: 'stars', at: 9, coins: 300, icon: '⭐', label: '9 stars' },
+  { key: 'stars', at: 20, coins: 700, icon: '⭐', label: '20 stars' },
+  { key: 'perfects', at: 1, coins: 150, icon: '💎', label: '1 perfect run' },
+  { key: 'perfects', at: 5, coins: 500, icon: '💎', label: '5 perfect runs' },
+  { key: 'fails', at: 20, coins: 150, icon: '💥', label: '20 alley sprints' },
+  { key: 'fails', at: 50, coins: 450, icon: '💥', label: '50 alley sprints' },
 ];
 
 export function totalStars(d: SaveData): number {
@@ -241,7 +241,7 @@ class Store {
   }
 
   // -------- car collection ---------
-  /** 별 개수로 해금 가능한 슈퍼카 인덱스 목록 */
+  /** supercar indices unlockable by total star count */
   availableCars(): number[] {
     const stars = totalStars(this.data);
     return SUPERCARS.map((c, i) => (stars >= carStarReq(c.tier) ? i : -1)).filter((i) => i >= 0);

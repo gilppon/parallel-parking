@@ -14,31 +14,31 @@ interface SuperCar {
   name: string;
   color: string;
   price: number;
-  /** 등급 (도감 정렬·해금 조건 표시용) */
+  /** tier (collection sorting + unlock requirement display) */
   tier: 1 | 2 | 3;
 }
 
 export const SUPERCARS: SuperCar[] = [
-  { name: '로터스 에메야', color: '#e11d9a', price: 3.4, tier: 1 },
-  { name: '람보르기니 우라칸', color: '#f5c400', price: 3.9, tier: 1 },
-  { name: '맥라렌 720S', color: '#ff6a00', price: 4.7, tier: 1 },
-  { name: '페라리 SF90', color: '#d80000', price: 6.1, tier: 1 },
-  { name: '롤스로이스 스펙터', color: '#6d28a8', price: 8.3, tier: 2 },
-  { name: '포르쉐 918', color: '#12b76a', price: 11, tier: 2 },
-  { name: '파가니 후아이라', color: '#dfe7ec', price: 38, tier: 2 },
-  { name: '애스턴마틴 발키리', color: '#0e7c66', price: 40, tier: 2 },
-  { name: '코닉세그 제스코', color: '#8f9aa5', price: 42, tier: 3 },
-  { name: '부가티 시론', color: '#1f4bff', price: 55, tier: 3 },
+  { name: 'Lotus Emeya', color: '#e11d9a', price: 3.4, tier: 1 },
+  { name: 'Lamborghini Huracan', color: '#f5c400', price: 3.9, tier: 1 },
+  { name: 'McLaren 720S', color: '#ff6a00', price: 4.7, tier: 1 },
+  { name: 'Ferrari SF90', color: '#d80000', price: 6.1, tier: 1 },
+  { name: 'Rolls-Royce Spectre', color: '#6d28a8', price: 8.3, tier: 2 },
+  { name: 'Porsche 918', color: '#12b76a', price: 11, tier: 2 },
+  { name: 'Pagani Huayra', color: '#dfe7ec', price: 38, tier: 2 },
+  { name: 'Aston Martin Valkyrie', color: '#0e7c66', price: 40, tier: 2 },
+  { name: 'Koenigsegg Jesko', color: '#8f9aa5', price: 42, tier: 3 },
+  { name: 'Bugatti Chiron', color: '#1f4bff', price: 55, tier: 3 },
 ];
 
-/** 도감 해금 조건: 별 개수 (tier별로 필요 별 증가) */
+/** Collection unlock requirement: total stars (requirement grows with tier) */
 export const CAR_STAR_REQ = [0, 6, 12, 18];
 
 export function carStarReq(tier: number): number {
   return CAR_STAR_REQ[Math.max(1, Math.min(3, tier)) - 1] ?? 0;
 }
 
-export const formatPrice = (p: number) => (p >= 10 ? `₩${Math.round(p)}억` : `₩${p.toFixed(1)}억`);
+export const formatPrice = (p: number) => (p >= 10 ? `$${Math.round(p)}M` : `$${p.toFixed(1)}M`);
 
 const ROW_Y = 526; // bottom parking lane centre-line
 const CURB_TOP = 556;
@@ -200,9 +200,9 @@ function bayLevel(o: BayOpts): LevelDef {
 export const LEVELS: LevelDef[] = [
   curbLevel({
     id: 1,
-    name: '신입 발렛',
-    subtitle: '넉넉한 자리… 일단 몸 풀기',
-    hint: '↑ 가속 · ←→ 조향 · SPACE 손브레이크 드리프트',
+    name: 'Rookie Valet',
+    subtitle: 'Roomy spot… just warming up',
+    hint: '↑ Throttle · ←→ Steer · SPACE Handbrake drift',
     slack: 104,
     gx: 760,
     start: { x: 150, y: 330, angle: 0 },
@@ -210,9 +210,9 @@ export const LEVELS: LevelDef[] = [
   }),
   curbLevel({
     id: 2,
-    name: '골목 역주행',
-    subtitle: '반대쪽에서 진입! 후진 슬라이드 각',
-    hint: '지나친 뒤 후진(↓)하며 손브레이크로 꼬리를 던져보세요',
+    name: 'Wrong-Way Alley',
+    subtitle: 'Come in from the far side! Reverse at an angle',
+    hint: 'Overshoot it, then reverse (↓) and flick the tail out with the handbrake',
     slack: 80,
     gx: 520,
     start: { x: 1140, y: 300, angle: Math.PI },
@@ -220,9 +220,9 @@ export const LEVELS: LevelDef[] = [
   }),
   curbLevel({
     id: 3,
-    name: '청담동 슈퍼카 거리',
-    subtitle: '반대편도 슈퍼카로 꽉 찼다',
-    hint: '도로가 좁아졌습니다. 진입각을 미리 잡으세요',
+    name: 'Cheongdam Supercar Strip',
+    subtitle: 'Both kerbs are packed with supercars',
+    hint: 'The road narrowed. Set your entry angle early',
     slack: 66,
     gx: 840,
     start: { x: 140, y: 310, angle: 0 },
@@ -231,9 +231,9 @@ export const LEVELS: LevelDef[] = [
   }),
   curbLevel({
     id: 4,
-    name: '이중주차 지옥',
-    subtitle: '도로 한복판에 배짱 이중주차',
-    hint: '로켓 부스터는 차고에서 해금할 수 있어요 (아직이라면 SPACE 드리프트로 밀어 넣으세요)',
+    name: 'Double-Parking Hell',
+    subtitle: 'A ballsy double-parker in the middle of the road',
+    hint: 'Rocket Booster unlocks in the Garage (no? shove it in with a SPACE drift)',
     slack: 58,
     gx: 930,
     start: { x: 150, y: 290, angle: 0 },
@@ -243,9 +243,9 @@ export const LEVELS: LevelDef[] = [
   }),
   bayLevel({
     id: 5,
-    name: '직각 주차 칼각',
-    subtitle: '슈퍼카 사이로 수직 주차',
-    hint: '수직 주차! 앞으로 들어가도, 후진해도 OK',
+    name: '90° Knife Fold',
+    subtitle: 'Back in perpendicular between two supercars',
+    hint: 'Perpendicular! Drive in forwards or reverse in — both fine',
     slack: 50,
     gx: 640,
     start: { x: 1120, y: 470, angle: Math.PI },
@@ -253,9 +253,9 @@ export const LEVELS: LevelDef[] = [
   }),
   curbLevel({
     id: 6,
-    name: '지하 주차장 기둥',
-    subtitle: '콘크리트 기둥은 알람도 안 울려요 (그냥 아파요)',
-    hint: '기둥은 치명적! 차고에서 스프링 범퍼를 사면 저속 접촉을 튕겨낼 수 있어요',
+    name: 'Parking Garage Pillars',
+    subtitle: 'Concrete pillars set off no alarm (they just hurt)',
+    hint: 'Pillars are lethal! Buy the Spring Bumper in the Garage to bounce off slow contact',
     theme: 'garage',
     slack: 50,
     gx: 700,
@@ -269,9 +269,9 @@ export const LEVELS: LevelDef[] = [
   }),
   curbLevel({
     id: 7,
-    name: '슈퍼카 박물관',
-    subtitle: '총 자산 수백억. 긁으면 인생 끝',
-    hint: '드리프트로 뒤꽁무니만 밀어 넣는 게 핵심',
+    name: 'Supercar Museum',
+    subtitle: 'Hundreds of millions on the lot. Scratch it, life over',
+    hint: 'The trick: drift it in rear-end first, nothing else',
     slack: 44,
     gx: 600,
     start: { x: 1150, y: 300, angle: Math.PI },
@@ -281,9 +281,9 @@ export const LEVELS: LevelDef[] = [
   }),
   bayLevel({
     id: 8,
-    name: '지하 벙커 직각',
-    subtitle: '기둥 사이를 지나 칼각으로',
-    hint: '속도를 죽이고 진입각을 맞추세요',
+    name: 'Underground Bunker 90°',
+    subtitle: 'Thread the pillars and knife it in',
+    hint: 'Kill your speed and line up the entry angle',
     theme: 'garage',
     slack: 40,
     gx: 880,
@@ -296,9 +296,9 @@ export const LEVELS: LevelDef[] = [
   }),
   curbLevel({
     id: 9,
-    name: '1cm 오차',
-    subtitle: '양쪽 합쳐 여유 1.5m. 숨도 참으세요',
-    hint: '깜빡이 켤 시간도 없다!',
+    name: 'The 1cm Error',
+    subtitle: 'Slack on both ends: 1.5m. Hold your breath too',
+    hint: "No time to even flick the indicator!",
     theme: 'garage',
     slack: 34,
     gx: 480,
@@ -310,9 +310,9 @@ export const LEVELS: LevelDef[] = [
   }),
   curbLevel({
     id: 10,
-    name: '신의 손',
-    subtitle: '전설의 발렛 파커에게 바칩니다',
-    hint: '여기까지 온 당신, 이미 전설.',
+    name: "God's Hand",
+    subtitle: 'Dedicated to the legendary valet parker',
+    hint: "You got this far. You're already a legend.",
     theme: 'garage',
     slack: 28,
     gx: 800,

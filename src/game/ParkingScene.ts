@@ -37,22 +37,22 @@ interface ParkedEntry {
 type Phase = HudState['phase'];
 
 const CRASH_LINES = [
-  '삐뽀삐뽀!! {car}(이)가 비명을 지릅니다',
-  '{car} 주인이 창밖에서 다 보고 있었습니다…',
-  '알람 볼륨 MAX! 온 동네가 깼습니다',
-  '보험사 직원이 벌써 도착했습니다',
-  '범퍼가 아니라 통장이 긁혔습니다',
-  '{car}: "방금 내 앞머리에 뭐가 닿았어…?"',
+  'BEEP BEEP!! {car} is screaming bloody murder',
+  'The owner of {car} watched the whole thing from the window…',
+  'Alarm volume MAX! The whole block woke up',
+  'The insurance adjuster has already arrived',
+  'It was not the bumper that got scraped. It was your bank balance',
+  '{car}: "So what just hit my front bumper…?"',
 ];
 const PILLAR_LINES = [
-  '기둥은 피하는 게 아니라… 돌아가는 겁니다',
-  '콘크리트 기둥 승! 당신 범퍼 패!',
-  '기둥이 먼저 움직이진 않았습니다',
+  "You don't avoid pillars… you orbit them",
+  'Concrete pillar wins! You lose!',
+  'The pillar did not move first',
 ];
 const TIME_LINES = [
-  '⏰ 시간 초과! 주차 딱지 발부!',
-  '⏰ 10초 컷 실패… 견인차가 출발했습니다',
-  '⏰ 뒤차가 경적을 울리다 못해 내렸습니다',
+  '⏰ TIME UP! TOW-AWAY NOTICE ISSUED!',
+  '⏰ Missed the 10s cut… the tow truck is already rolling',
+  '⏰ The car behind you honked so hard it got out to look',
 ];
 
 function mulberry32(a: number) {
@@ -325,7 +325,7 @@ export class ParkingScene extends Phaser.Scene {
 
   private buildPlayerVisuals() {
     const save = store.get();
-    // 장착 슈퍼카가 있으면 그 색상을 기본값으로 (페인트는 덮어쓰기 가능)
+    // Use the equipped supercar's colour as the default (paint overrides it)
     const car = SUPERCARS[save.carEquipped];
     const paint =
       PAINTS.find((p) => p.id === save.paint) ??
@@ -593,7 +593,7 @@ export class ParkingScene extends Phaser.Scene {
       this.popText(p.x, p.y - 20, 'BOING!', '#22e6ff');
       bridge.emit('banner', {
         id: Date.now(),
-        text: `🌀 스프링 범퍼 발동! 남은 횟수 ${this.bumperCharges}`,
+        text: `🌀 SPRING BUMPER! ${this.bumperCharges} left`,
         tone: 'info',
       });
       const ring = this.track(this.add.circle(p.x, p.y, 8).setStrokeStyle(4, 0x22e6ff).setDepth(9));
@@ -646,17 +646,17 @@ export class ParkingScene extends Phaser.Scene {
     let bill: string | undefined;
     if (info) {
       message = pick(CRASH_LINES).replace('{car}', info.name);
-      bill = `수리비 ${formatPrice(info.price * 0.22)} 청구!`;
+      bill = `Repair bill ${formatPrice(info.price * 0.22)}!`;
     } else {
       message = pick(PILLAR_LINES);
-      bill = '범퍼 수리비 ₩0.3억 청구!';
+      bill = 'Bumper repair $0.3M!';
     }
 
     const cam = this.cameras.main;
     cam.shake(520, 0.013);
     cam.flash(300, 255, 40, 40);
     this.sparks.explode(30, x, y);
-    this.popText(x, y - 24, pick(['쾅!!', '삐뽀삐뽀!', '꽝!!', '아악!']), '#ff3b3b');
+    this.popText(x, y - 24, pick(['CRASH!!', 'BEEP BEEP!', 'BONK!!', 'AAGH!']), '#ff3b3b');
     this.startAlarmFlash(other);
     const entry = this.parked.find((e) => e.body === other);
     if (entry) this.wobble(entry.sprite, 5);
@@ -670,7 +670,7 @@ export class ParkingScene extends Phaser.Scene {
       coins: 0,
       angleErrDeg: this.report?.angleErrDeg ?? 0,
       overflowCm: this.report?.overflowCm ?? 0,
-      carName: info?.name ?? '콘크리트 기둥',
+      carName: info?.name ?? 'Concrete Pillar',
       bill,
       message,
       fails: this.sessionFails,
@@ -775,7 +775,7 @@ export class ParkingScene extends Phaser.Scene {
         stars: stars2,
         best,
         unlocked: Math.max(d.unlocked, Math.min(LEVELS.length - 1, this.levelIndex + 1)),
-        // 이번 런 무사고였다면 PERFECT 누적
+        // Crash-free run this time → bump the PERFECT counter
         perfects: this.sessionFails === 0 ? d.perfects + 1 : d.perfects,
       };
     });
@@ -798,7 +798,7 @@ export class ParkingScene extends Phaser.Scene {
       coins,
       angleErrDeg: r.angleErrDeg,
       overflowCm: r.overflowCm,
-      message: perfect ? '전설의 발렛! 각도가 자로 잰 듯합니다' : '깔끔한 주차! 슈퍼카 주인이 박수를 칩니다',
+      message: perfect ? 'Legendary valet! The angle looks ruler-straight' : 'Clean park! The supercar owner is applauding',
       fails: this.sessionFails,
     };
     this.emitHud(true);

@@ -63,7 +63,7 @@ export default function App() {
       bridge.on('hud', (h) => {
         setHud(h);
         setLoaded(true);
-        poki.notifyReady(); // 첫 프레임 수신 후 1회만 (포털 로딩 게이지 정합)
+        poki.notifyReady(); // once only, after the first frame lands (keeps the portal loading gauge honest)
         if (h.phase === 'ready' || h.phase === 'running') {
           setResult((r) => (r ? null : r));
         }
@@ -99,7 +99,7 @@ export default function App() {
     if (paused) poki.gameplayStop();
   }, [paused]);
 
-  // 탭 전환/포커스 상실 시 자동 일시정지 (키 고착 버그 + Poki 백그라운드 계상 방지)
+  // auto-pause on tab switch / focus loss (stuck-key bug + stops Poki counting the background)
   const playingRef = useRef(false);
   const pausedRef = useRef(paused);
   pausedRef.current = paused;
@@ -245,7 +245,7 @@ export default function App() {
           >
             <div className="text-center">
               <div className="font-display text-[54px] text-lime-300 neon-text animate-blink">LOADING…</div>
-              <div className="text-white/50 text-[14px] mt-2">슈퍼카 시동 거는 중</div>
+              <div className="text-white/50 text-[14px] mt-2">Spinning up the supercar…</div>
             </div>
           </div>
         </div>
@@ -253,7 +253,7 @@ export default function App() {
 
       {portrait && (
         <div className="fixed left-1/2 top-2 -translate-x-1/2 z-[100] rounded-full bg-black/80 border border-white/20 px-4 py-2 text-[13px] text-white/90">
-          📱 가로 모드로 돌리면 더 크게 즐길 수 있어요
+          📱 Rotate to landscape for a much bigger view
         </div>
       )}
     </div>

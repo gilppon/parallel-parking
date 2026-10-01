@@ -181,7 +181,7 @@ class AudioFx {
     src.stop(t0 + dur + 0.05);
   }
 
-  /** 구매/해금 성공 chime */
+  /** purchase / unlock success chime */
   buy() {
     this.coin();
     this.tone('square', 880, 1320, 0.1, 0.06, 0.12);
