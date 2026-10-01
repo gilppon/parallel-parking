@@ -13,8 +13,9 @@
       content="default-src 'self'; img-src 'self' data: blob:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://game-cdn.poki.com https://sdk.crazygames.com; connect-src 'self' https://game-cdn.poki.com https://sdk.crazygames.com; frame-ancestors 'self'; base-uri 'self'"
     />
     <!--
-      Poki SDK (uncomment when publishing on Poki – the game auto-detects window.PokiSDK,
-      otherwise a mock ad overlay is used):
+      Portal SDKs are auto-detected: on a Poki / CrazyGames host (or with ?poki / ?crazy)
+      the official script is injected by PokiService; elsewhere a mock ad overlay is used.
+      Uncomment to have the portal SDK preloaded by the host page instead:
       <script src="https://game-cdn.poki.com/scripts/v2/poki-sdk.js"></script>
     -->
   </head>
