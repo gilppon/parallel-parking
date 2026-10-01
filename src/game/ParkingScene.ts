@@ -37,8 +37,8 @@ interface ParkedEntry {
 type Phase = HudState['phase'];
 
 const CRASH_LINES = [
-  'BEEP BEEP!! {car} is screaming bloody murder',
-  'The owner of {car} watched the whole thing from the window…',
+  'BEEP BEEP!! The {car} is screaming bloody murder',
+  'The owner of the {car} watched the whole thing from the window…',
   'Alarm volume MAX! The whole block woke up',
   'The insurance adjuster has already arrived',
   'It was not the bumper that got scraped. It was your bank balance',
@@ -46,13 +46,13 @@ const CRASH_LINES = [
 ];
 const PILLAR_LINES = [
   "You don't avoid pillars… you orbit them",
-  'Concrete pillar wins! You lose!',
+  'Concrete pillar: 1. You: 0.',
   'The pillar did not move first',
 ];
 const TIME_LINES = [
-  '⏰ TIME UP! TOW-AWAY NOTICE ISSUED!',
-  '⏰ Missed the 10s cut… the tow truck is already rolling',
-  '⏰ The car behind you honked so hard it got out to look',
+  '⏰ TOW-AWAY NOTICE ISSUED — enjoy the walk home',
+  '⏰ Missed the 10-second mark… the tow truck is already rolling',
+  '⏰ The car behind you honked so hard the driver got out to look',
 ];
 
 function mulberry32(a: number) {

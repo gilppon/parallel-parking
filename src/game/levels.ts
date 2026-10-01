@@ -202,7 +202,7 @@ export const LEVELS: LevelDef[] = [
     id: 1,
     name: 'Rookie Valet',
     subtitle: 'Roomy spot… just warming up',
-    hint: '↑ Throttle · ←→ Steer · SPACE Handbrake drift',
+    hint: '↑ Gas · ←→ Steer · SPACE Drift',
     slack: 104,
     gx: 760,
     start: { x: 150, y: 330, angle: 0 },
@@ -211,8 +211,8 @@ export const LEVELS: LevelDef[] = [
   curbLevel({
     id: 2,
     name: 'Wrong-Way Alley',
-    subtitle: 'Come in from the far side! Reverse at an angle',
-    hint: 'Overshoot it, then reverse (↓) and flick the tail out with the handbrake',
+    subtitle: 'Come in from the far side',
+    hint: 'Overshoot it, then reverse (↓) and swing the tail out with the handbrake',
     slack: 80,
     gx: 520,
     start: { x: 1140, y: 300, angle: Math.PI },
@@ -220,8 +220,8 @@ export const LEVELS: LevelDef[] = [
   }),
   curbLevel({
     id: 3,
-    name: 'Cheongdam Supercar Strip',
-    subtitle: 'Both kerbs are packed with supercars',
+    name: 'Cheongdam Strip',
+    subtitle: 'Kerbs packed with supercars',
     hint: 'The road narrowed. Set your entry angle early',
     slack: 66,
     gx: 840,
@@ -232,8 +232,8 @@ export const LEVELS: LevelDef[] = [
   curbLevel({
     id: 4,
     name: 'Double-Parking Hell',
-    subtitle: 'A ballsy double-parker in the middle of the road',
-    hint: 'Rocket Booster unlocks in the Garage (no? shove it in with a SPACE drift)',
+    subtitle: 'A ballsy double-parker ahead',
+    hint: 'Buy the Rocket Booster in the Garage, or just shove it in with a SPACE drift',
     slack: 58,
     gx: 930,
     start: { x: 150, y: 290, angle: 0 },
@@ -244,7 +244,7 @@ export const LEVELS: LevelDef[] = [
   bayLevel({
     id: 5,
     name: '90° Knife Fold',
-    subtitle: 'Back in perpendicular between two supercars',
+    subtitle: 'Back in between two supercars',
     hint: 'Perpendicular! Drive in forwards or reverse in — both fine',
     slack: 50,
     gx: 640,
@@ -253,8 +253,8 @@ export const LEVELS: LevelDef[] = [
   }),
   curbLevel({
     id: 6,
-    name: 'Parking Garage Pillars',
-    subtitle: 'Concrete pillars set off no alarm (they just hurt)',
+    name: 'Garage Pillars',
+    subtitle: 'Pillars: no alarm, just pain',
     hint: 'Pillars are lethal! Buy the Spring Bumper in the Garage to bounce off slow contact',
     theme: 'garage',
     slack: 50,
@@ -270,7 +270,7 @@ export const LEVELS: LevelDef[] = [
   curbLevel({
     id: 7,
     name: 'Supercar Museum',
-    subtitle: 'Hundreds of millions on the lot. Scratch it, life over',
+    subtitle: 'Worth a fortune — don’t scratch',
     hint: 'The trick: drift it in rear-end first, nothing else',
     slack: 44,
     gx: 600,
@@ -282,7 +282,7 @@ export const LEVELS: LevelDef[] = [
   bayLevel({
     id: 8,
     name: 'Underground Bunker 90°',
-    subtitle: 'Thread the pillars and knife it in',
+    subtitle: 'Pillars, then knife it in',
     hint: 'Kill your speed and line up the entry angle',
     theme: 'garage',
     slack: 40,
@@ -297,7 +297,7 @@ export const LEVELS: LevelDef[] = [
   curbLevel({
     id: 9,
     name: 'The 1cm Error',
-    subtitle: 'Slack on both ends: 1.5m. Hold your breath too',
+    subtitle: '153cm of slack. Hold breath',
     hint: "No time to even flick the indicator!",
     theme: 'garage',
     slack: 34,
@@ -311,7 +311,7 @@ export const LEVELS: LevelDef[] = [
   curbLevel({
     id: 10,
     name: "God's Hand",
-    subtitle: 'Dedicated to the legendary valet parker',
+    subtitle: 'For the legendary valet parker',
     hint: "You got this far. You're already a legend.",
     theme: 'garage',
     slack: 28,

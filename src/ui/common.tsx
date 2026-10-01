@@ -84,7 +84,7 @@ export function CoinBadge({ coins, className }: { coins: number; className?: str
       )}
     >
       <span className="grid place-items-center w-7 h-7 rounded-full bg-amber-400 text-amber-900 text-[15px] shadow-inner">🪙</span>
-      {coins.toLocaleString()}
+      {coins.toLocaleString('en-US')}
     </div>
   );
 }

@@ -118,13 +118,13 @@ export interface Milestone {
 }
 
 export const MILESTONES: Milestone[] = [
-  { key: 'stars', at: 3, coins: 120, icon: '⭐', label: '3 stars' },
-  { key: 'stars', at: 9, coins: 300, icon: '⭐', label: '9 stars' },
-  { key: 'stars', at: 20, coins: 700, icon: '⭐', label: '20 stars' },
-  { key: 'perfects', at: 1, coins: 150, icon: '💎', label: '1 perfect run' },
-  { key: 'perfects', at: 5, coins: 500, icon: '💎', label: '5 perfect runs' },
-  { key: 'fails', at: 20, coins: 150, icon: '💥', label: '20 alley sprints' },
-  { key: 'fails', at: 50, coins: 450, icon: '💥', label: '50 alley sprints' },
+  { key: 'stars', at: 3, coins: 120, icon: '★', label: '3 stars' },
+  { key: 'stars', at: 9, coins: 300, icon: '★', label: '9 stars' },
+  { key: 'stars', at: 20, coins: 700, icon: '★', label: '20 stars' },
+  { key: 'perfects', at: 1, coins: 150, icon: '💎', label: '1 clean run' },
+  { key: 'perfects', at: 5, coins: 500, icon: '💎', label: '5 clean runs' },
+  { key: 'fails', at: 20, coins: 150, icon: '💥', label: '20 crashes' },
+  { key: 'fails', at: 50, coins: 450, icon: '💥', label: '50 crashes' },
 ];
 
 export function totalStars(d: SaveData): number {

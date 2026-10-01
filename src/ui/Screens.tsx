@@ -65,7 +65,7 @@ export function MenuScreen({
               : 'border-white/15 bg-black/40 text-white/40 cursor-default'
           )}
         >
-          {daily.available ? `📅 +${daily.coins} (Day ${daily.day})` : `📅 Day ${daily.day} checked in`}
+          {daily.available ? `📅 +${daily.coins} (Day ${daily.day})` : `📅 Day ${daily.day} claimed`}
         </button>
         {ms ? (
           <button
@@ -99,9 +99,9 @@ export function MenuScreen({
           Parking <span className="text-pink-400 neon-text">Master</span>
         </h1>
         <p className="mt-4 text-[19px] text-white/80 leading-relaxed">
-          Not even <b className="text-amber-300">a single 1cm</b> of error between supercars is tolerated.
+          Not even <b className="text-amber-300">1cm</b> of clearance between supercars is tolerated.
           <br />
-          Rocket Booster and handbrake drift. Get it in <b className="text-lime-300">under 10 seconds</b>.
+          Rocket Booster and handbrake drift. Park in <b className="text-lime-300">under 10 seconds</b>.
         </p>
 
         <div className="mt-7 flex flex-wrap items-center gap-4">
@@ -113,16 +113,16 @@ export function MenuScreen({
         </div>
 
         <div className="mt-7 glass rounded-2xl p-4 inline-flex flex-wrap gap-x-5 gap-y-2 items-center text-[14px] text-white/85 max-w-[600px]">
-          <span className="flex items-center gap-2"><Keycap>↑</Keycap><Keycap>↓</Keycap> Gas / Brake·Reverse</span>
+          <span className="flex items-center gap-2"><Keycap>↑</Keycap><Keycap>↓</Keycap> Gas · Brake / Reverse</span>
           <span className="flex items-center gap-2"><Keycap>←</Keycap><Keycap>→</Keycap> Steer</span>
-          <span className="flex items-center gap-2"><Keycap wide>SPACE</Keycap> Handbrake drift</span>
+          <span className="flex items-center gap-2"><Keycap wide>SPACE</Keycap> Drift</span>
           <span className="flex items-center gap-2"><Keycap wide>SHIFT</Keycap> Rocket Booster</span>
           <span className="flex items-center gap-2"><Keycap>R</Keycap> Restart <Keycap>ESC</Keycap> Pause</span>
         </div>
       </div>
 
       <div className="absolute left-14 bottom-6 flex items-center gap-6 text-[14px] text-white/60">
-        <span>⭐ {totalStars_} / {LEVELS.length * 3}</span>
+        <span>★ {totalStars_} / {LEVELS.length * 3}</span>
         <span>💥 {save.fails} lifetime crashes</span>
         <button
           tabIndex={-1}
@@ -264,11 +264,11 @@ export function Garage({ onBack }: { onBack: () => void }) {
             <div>
               <div className="font-display text-[22px] text-orange-300">🚀 Rocket Booster <span className="text-white/60 text-[15px]">Lv {save.rocket}/3</span></div>
               <div className="text-[13px] text-white/65 mt-1">
-                Ignite with SHIFT! Explosive thrust until the tank runs dry. Let go and the fuel slowly refills.
+                Ignite with SHIFT! Explosive thrust until the tank runs dry. Release it and the fuel slowly refills.
               </div>
               {rocketNext && (
                 <div className="text-[12px] text-orange-200/90 mt-1">
-                  Next level: fuel {rocketNext.fuel} · thrust {rocketNext.thrust} · top speed {Math.round(rocketNext.maxSpeed * 0.162)}km/h
+                  Next up: stronger, longer burn · top speed {Math.round(rocketNext.maxSpeed * 0.162)}km/h
                 </div>
               )}
             </div>
@@ -294,11 +294,12 @@ export function Garage({ onBack }: { onBack: () => void }) {
             <div>
               <div className="font-display text-[22px] text-cyan-300">🌀 Spring Bumper <span className="text-white/60 text-[15px]">Lv {save.bumper}/2</span></div>
               <div className="text-[13px] text-white/65 mt-1">
-                Bounces off slow contact with a silent <b>BOING!</b> — no alarm. Charges refill every attempt.
+                Slow hits bounce off with a silent <b>BOING!</b> — no alarm, no bill. Charges refill every attempt.
               </div>
               {bumperNext && (
                 <div className="text-[12px] text-cyan-200/90 mt-1">
-                  Next level: blocks contact under {Math.round(bumperNext.threshold * 0.162)}km/h · {bumperNext.charges} charges
+                  Next up: forgives hits under {Math.round(bumperNext.threshold * 0.162)}km/h · {bumperNext.charges}{' '}
+                  {bumperNext.charges === 1 ? 'charge' : 'charges'}
                 </div>
               )}
             </div>
@@ -359,7 +360,7 @@ export function Garage({ onBack }: { onBack: () => void }) {
 
         {/* Paint */}
         <section className="rounded-2xl bg-white/5 border border-white/10 p-4 mb-3">
-          <div className="font-display text-[22px] text-white mb-2">🎨 Car Colour <span className="text-white/50 text-[13px]">Free</span></div>
+          <div className="font-display text-[22px] text-white mb-2">🎨 Car Color <span className="text-white/50 text-[13px]">Free</span></div>
           <div className="flex gap-3 flex-wrap">
             {PAINTS.map((p) => (
               <button
@@ -388,7 +389,7 @@ export function Garage({ onBack }: { onBack: () => void }) {
             🏎️ Supercar Collection <span className="text-white/60 text-[15px]">{save.carsOwned.length}/{SUPERCARS.length}</span>
           </div>
           <div className="text-[13px] text-white/65 mb-3">
-            Bank stars to unlock supercars. Tier 1 is free from the start, Tier 2 at 6 stars, Tier 3 at 12 stars.
+            Bank stars to unlock supercars. Tier 1 is free from the start, Tier 2 at 6 stars, Tier 3 at 18 stars.
           </div>
           <div className="grid grid-cols-5 gap-2">
             {SUPERCARS.map((c, i) => {
@@ -427,7 +428,7 @@ export function Garage({ onBack }: { onBack: () => void }) {
                     {owned ? c.name.split(' ')[0] : '???'}
                   </span>
                   <span className="block text-[9px] text-white/50">
-                    {owned ? (active ? 'Equipped' : 'Owned') : `⭐${req}`}
+                    {owned ? (active ? 'Equipped' : 'Owned') : `★${req}`}
                   </span>
                   {can && (
                     <span className="absolute -top-1.5 -right-1.5 rounded-full bg-lime-400 px-1.5 py-px text-[9px] font-black text-black">
@@ -444,7 +445,7 @@ export function Garage({ onBack }: { onBack: () => void }) {
         <section className="rounded-2xl bg-gradient-to-r from-amber-500/20 to-pink-500/20 border border-amber-300/30 p-4 flex items-center justify-between">
           <div>
             <div className="font-display text-[20px] text-amber-200">📺 Free Coins</div>
-            <div className="text-[13px] text-white/70">Watch a short ad to grab 200 coins (Poki rewardedBreak)</div>
+            <div className="text-[13px] text-white/70">Watch a short ad for 200 coins.</div>
           </div>
           <Btn
             tone="lime"
@@ -518,7 +519,7 @@ export function ResultOverlay({
           {!isLast ? (
             <Btn size="md" onClick={onNext}>Next Stage ▶</Btn>
           ) : (
-            <div className="font-display text-[22px] text-amber-300 w-full">🏆 All stages cleared! You are a legendary valet parker!</div>
+            <div className="font-display text-[22px] text-amber-300 w-full">🏆 All stages cleared! You&rsquo;re a legendary valet!</div>
           )}
           <Btn tone="cyan" size="md" onClick={onRetry}>↺ Retry</Btn>
           <Btn
@@ -538,7 +539,7 @@ export function ResultOverlay({
           >
             📺 2× Coins
           </Btn>
-          <Btn tone="ghost" size="md" onClick={onMenu}>Menu</Btn>
+          <Btn tone="ghost" size="md" onClick={onMenu}>Main Menu</Btn>
         </div>
       </div>
     </div>
@@ -558,7 +559,7 @@ export function AdOverlay({ req, onClose }: { req: AdRequest; onClose: () => voi
   return (
     <div className="absolute inset-0 z-50 grid place-items-center bg-[#0a0a12]">
       <div className="text-center">
-        <div className="text-[13px] tracking-[0.3em] text-white/40 mb-3">ADVERTISEMENT · POKI SDK MOCK</div>
+        <div className="text-[13px] tracking-[0.3em] text-white/40 mb-3">ADVERTISEMENT</div>
         <div className="w-[560px] h-[315px] rounded-2xl border border-white/15 bg-gradient-to-br from-indigo-700 via-fuchsia-600 to-orange-500 grid place-items-center relative overflow-hidden">
           <div className="absolute inset-0 opacity-30 [background:repeating-linear-gradient(45deg,transparent_0_18px,rgba(255,255,255,.25)_18px_36px)]" />
           <div className="relative">
@@ -572,7 +573,7 @@ export function AdOverlay({ req, onClose }: { req: AdRequest; onClose: () => voi
         <div className="mt-5">
           {left > 0 ? (
             <div className="font-display text-[22px] text-white/70">
-              {req.kind === 'rewarded' ? `Reward in ${left}s` : `Skip in ${left}s`}
+              {req.kind === 'rewarded' ? `Reward in ${left}s` : `Ad ends in ${left}s`}
             </div>
           ) : (
             <Btn

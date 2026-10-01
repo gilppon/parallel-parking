@@ -96,26 +96,27 @@ export function Hud({ hud, coins, touch, muted, onPause, onMute, banner }: HudPr
         <div className="absolute top-[128px] left-1/2 -translate-x-1/2 text-center animate-slide-up">
           <div className="glass rounded-2xl px-6 py-3 inline-block">
             <div className="font-display text-[26px] text-lime-300 animate-blink">
-              {touch ? '▲ Hit the GAS button to launch!' : 'Press ↑ / W to launch! (timer starts)'}
+              {touch ? 'Tap GAS to launch! Timer starts.' : 'Press ↑ / W to launch! Timer starts.'}
             </div>
             <div className="text-[14px] text-white/75 mt-1">{level.hint}</div>
             {/* touch devices don't know the shortcuts → always show them */}
             <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[13px] text-white/70">
               {touch ? (
-                <>
-                  <span>◀▶ Side buttons = Steer</span>
-                  <span>▲▼ = Gas / Reverse</span>
-                  <span>💨 = Handbrake drift</span>
-                  <span>⏸ = Pause</span>
-                </>
-              ) : (
-                <>
-                  <span className="flex items-center gap-1">
-                    <Keycap>↑↓←→</Keycap> Drive
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Keycap wide>SPACE</Keycap> Drift
-                  </span>
+<>
+                    <span>◀ ▶ Steer</span>
+                    <span>▲ Gas / ▼ Reverse</span>
+                    <span>DRIFT Handbrake drift</span>
+                    <span>🚀 Rocket Booster</span>
+                    <span>⏸ Pause</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="flex items-center gap-1">
+                      <Keycap>↑↓←→</Keycap> Drive
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Keycap wide>SPACE</Keycap> Drift
+                    </span>
                   <span className="flex items-center gap-1">
                     <Keycap>SHIFT</Keycap> Rocket
                   </span>
@@ -237,7 +238,7 @@ export function Hud({ hud, coins, touch, muted, onPause, onMute, banner }: HudPr
 
       {!touch && ready && (
         <div className="absolute bottom-[132px] left-1/2 -translate-x-1/2 flex items-center gap-3 text-[13px] text-white/80 glass rounded-full px-5 py-2">
-          <Keycap>↑↓←→</Keycap> Drive <Keycap wide>SPACE</Keycap> Handbrake <Keycap>SHIFT</Keycap> Rocket <Keycap>R</Keycap> Restart <Keycap>ESC</Keycap> Pause
+          <Keycap>↑↓←→</Keycap> Drive <Keycap wide>SPACE</Keycap> Drift <Keycap>SHIFT</Keycap> Rocket <Keycap>R</Keycap> Restart <Keycap>ESC</Keycap> Pause
         </div>
       )}
 
@@ -311,14 +312,14 @@ export function FailBanner({ result }: { result: ResultPayload }) {
           className="font-display text-[68px] leading-none text-outline text-red-400"
           style={{ textShadow: '0 0 30px rgba(255,40,40,0.9)' }}
         >
-          {crash ? '🚨 ALARM BLASTED!! 🚨' : '⏰ TIME UP!'}
+          {crash ? '🚨 ALARM BLASTED!' : '⏰ TIME UP!'}
         </div>
         <div className="mt-3 inline-block rounded-2xl bg-black/75 border border-red-400/60 px-6 py-3">
           <div className="font-display text-[26px] text-white">{result.message}</div>
           {result.bill && <div className="mt-1 font-display text-[22px] text-amber-300">🧾 {result.bill}</div>}
         </div>
         <div className="mt-3 text-[14px] text-white/80 animate-blink">
-          Auto-restarting shortly · hit <b>SPACE / R</b> to restart now
+          Auto-restarting shortly · press <b>SPACE</b> or <b>R</b> to restart now
         </div>
       </div>
     </div>
