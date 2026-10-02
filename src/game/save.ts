@@ -19,6 +19,8 @@ export interface SaveData {
   /** supercar index currently equipped (default 0) */
   carEquipped: number;
   perfects: number; // crash-free clears
+  /** first-run driving coach completed (persisted so it never shows twice) */
+  tutorialDone: boolean;
   lastDaily: number;
   dailyStreak: number;
   claimedMilestones: number[];
@@ -67,6 +69,7 @@ const defaults = (): SaveData => ({
   carsOwned: [0],
   carEquipped: 0,
   perfects: 0,
+  tutorialDone: false,
   lastDaily: 0,
   dailyStreak: 0,
   claimedMilestones: [],
@@ -94,6 +97,7 @@ function load(): SaveData {
       neonOwned: parsed.neonOwned?.length ? parsed.neonOwned : d.neonOwned,
       carsOwned: Array.isArray(parsed.carsOwned) && parsed.carsOwned.length ? parsed.carsOwned : d.carsOwned,
       carEquipped: Math.max(0, Math.round(num(parsed.carEquipped, 0))),
+      tutorialDone: parsed.tutorialDone === true,
       lastDaily: Math.max(0, num(parsed.lastDaily, 0)),
       dailyStreak: Math.max(0, Math.min(7, Math.round(num(parsed.dailyStreak, 0)))),
       claimedMilestones: Array.isArray(parsed.claimedMilestones)

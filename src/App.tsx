@@ -7,6 +7,7 @@ import { store } from './game/save';
 import { WORLD_H, WORLD_W, type HudState, type ResultPayload } from './game/types';
 import { useEscape, useSave } from './ui/common';
 import { FailBanner, Hud, isTouchDevice, PauseOverlay } from './ui/Hud';
+import { CoachOverlay, coachStepFor, shouldShowCoach } from './ui/Coach';
 import { AdOverlay, Garage, LevelSelect, MenuScreen, ResultOverlay } from './ui/Screens';
 
 type Screen = 'menu' | 'levels' | 'garage' | 'play';
@@ -180,6 +181,19 @@ export default function App() {
     if (!next) audio.startMusic();
   }, []);
 
+  // First-run coach completion: the sensor is half-filled (the player is
+  // demonstrably doing it right), or their first run just ended. Persisted so
+  // the coach never shows twice. Runs on every hud emit but writes at most once.
+  useEffect(() => {
+    if (save.tutorialDone) return;
+    if (screen !== 'play' || !hud || hud.levelIndex !== 0 || paused) return;
+    if (hud.parkProgress >= 0.5 || result) store.update({ tutorialDone: true });
+  }, [save.tutorialDone, screen, hud, result, paused]);
+
+  const skipCoach = useCallback(() => {
+    store.update({ tutorialDone: true });
+  }, []);
+
   // ---------------------------------------------------------------- render
   const playing = screen === 'play';
   const failResult = result && result.kind !== 'success' ? result : null;
@@ -219,6 +233,18 @@ export default function App() {
               onMute={toggleMute}
             />
           )}
+          {/* first-run driving coach: level 1 only, follows live game state */}
+          {playing &&
+            hud &&
+            shouldShowCoach({
+              playing,
+              tutorialDone: save.tutorialDone,
+              levelIndex: hud.levelIndex,
+              hasResult: result !== null,
+              paused,
+              hasAd: ad !== null,
+              phase: hud.phase,
+            }) && <CoachOverlay step={coachStepFor(hud) ?? 0} touch={touch} onSkip={skipCoach} />}
           {playing && failResult && <FailBanner result={failResult} />}
           {playing && successResult && (
             <ResultOverlay
