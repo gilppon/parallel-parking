@@ -237,16 +237,22 @@ export default function App() {
 
           {ad && <AdOverlay req={ad} onClose={() => setAd(null)} />}
 
-          {/* loading splash */}
+          {/* loading splash. Kept mounted so the opacity transition can play, but once
+              loaded it is fully removed from the tree: `animate-blink` on the child sets
+              `opacity: 1`, which re-reveals the text through a parent `opacity-0`. */}
           <div
             className={`absolute inset-0 z-[60] grid place-items-center bg-[#05060a] transition-opacity duration-500 ${
-              loaded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+              loaded ? 'pointer-events-none opacity-0' : 'opacity-100'
             }`}
+            hidden={loaded}
+            aria-hidden={loaded}
           >
-            <div className="text-center">
-              <div className="font-display text-[54px] text-lime-300 neon-text animate-blink">LOADING…</div>
-              <div className="text-white/50 text-[14px] mt-2">Spinning up the supercar…</div>
-            </div>
+            {!loaded && (
+              <div className="text-center">
+                <div className="font-display text-[54px] text-lime-300 neon-text animate-blink">LOADING…</div>
+                <div className="text-white/50 text-[14px] mt-2">Spinning up the supercar…</div>
+              </div>
+            )}
           </div>
         </div>
       </div>
