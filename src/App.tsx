@@ -129,6 +129,8 @@ export default function App() {
   // ---------------------------------------------------------------- actions
   const startLevel = useCallback((i: number) => {
     audio.unlock();
+    // Music needs the same first gesture as the AudioContext itself.
+    audio.startMusic();
     (document.activeElement as HTMLElement | null)?.blur?.();
     setResult(null);
     setBanner(null);
@@ -172,7 +174,10 @@ export default function App() {
   }, [result, startLevel]);
 
   const toggleMute = useCallback(() => {
-    store.update((d) => ({ muted: !d.muted }));
+    const next = !store.get().muted;
+    store.update(() => ({ muted: next }));
+    // Unmuting is a gesture: (re)start the loop if it never got going.
+    if (!next) audio.startMusic();
   }, []);
 
   // ---------------------------------------------------------------- render

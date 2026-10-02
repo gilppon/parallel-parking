@@ -52,6 +52,54 @@ class AudioFx {
     this.applyMaster();
   }
 
+  // ---- Background music: neon night-drive groove, no assets ----
+  // Reuses tone(), which already routes through master (muted/adMuted-safe).
+  private musicGain: GainNode | null = null;
+  private musicTimer: number | null = null;
+  private musicStep = 0;
+
+  /** Idempotent. Call from a user gesture; AudioContext requires one. */
+  startMusic() {
+    this.unlock();
+    if (!this.ctx || !this.master) return;
+    if (!this.musicGain) {
+      this.musicGain = this.ctx.createGain();
+      this.musicGain.gain.value = 0.5;
+      this.musicGain.connect(this.master);
+    }
+    if (this.musicTimer !== null) return;
+    this.musicStep = 0;
+    this.musicTimer = window.setInterval(() => this.musicTick(), 150);
+  }
+
+  stopMusic() {
+    if (this.musicTimer !== null) {
+      window.clearInterval(this.musicTimer);
+      this.musicTimer = null;
+    }
+  }
+
+  private musicTick() {
+    // Never schedule while muted, ad-muted, hidden, or suspended; tails fade.
+    if (this.muted || this.adMuted || document.hidden || !this.musicGain) return;
+    if (!this.ctx || this.ctx.state !== 'running') return;
+    const dest = this.musicGain;
+    const s = this.musicStep++ % 32;
+    // Driving 16th-note bassline in A minor, sawtooth and low.
+    const bass = [55.0, 55.0, 55.0, 65.41, 55.0, 55.0, 82.41, 65.41,
+      55.0, 55.0, 55.0, 65.41, 73.42, 65.41, 55.0, 49.0];
+    const b = bass[s % 16];
+    if (b !== undefined) this.tone('sawtooth', b, b, 0, 0.13, 0.05, dest);
+    // Neon arp lead every other step, two octaves up.
+    if (s % 2 === 0) {
+      const arp = [440.0, 523.25, 659.25, 880.0, 659.25, 523.25, 587.33, 659.25];
+      const f = arp[(s >> 1) % 8];
+      if (f !== undefined) this.tone('square', f, f, 0, 0.11, 0.028, dest);
+    }
+    // Sparkle octave on each bar start.
+    if (s % 16 === 0) this.tone('sine', 880.0, 880.0, 0, 0.3, 0.03, dest);
+  }
+
   private applyMaster() {
     if (this.master && this.ctx) {
       this.master.gain.setTargetAtTime(this.muted || this.adMuted ? 0 : 0.8, this.ctx.currentTime, 0.02);
