@@ -3,6 +3,7 @@ import { audio } from './game/AudioFx';
 import { bridge, type AdRequest, type BannerPayload } from './game/bridge';
 import { LEVELS } from './game/levels';
 import { poki } from './game/PokiService';
+import { readParkingChallenge } from './game/share';
 import { store } from './game/save';
 import { WORLD_H, WORLD_W, type HudState, type ResultPayload } from './game/types';
 import { useEscape, useSave } from './ui/common';
@@ -30,6 +31,8 @@ export default function App() {
   const [banner, setBanner] = useState<BannerPayload | null>(null);
   const [ad, setAd] = useState<AdRequest | null>(null);
   const [paused, setPaused] = useState(false);
+  const [challengeDismissed, setChallengeDismissed] = useState(false);
+  const parkingChallenge = readParkingChallenge();
   resultRef.current = result;
 
   // ---------------------------------------------------------------- responsive scaling
@@ -155,11 +158,21 @@ export default function App() {
     bridge.emit('cmd:preview', 0);
   }, []);
 
+  const resumeGame = useCallback(() => {
+    // The ready phase has not started gameplay yet; only re-notify after an actual run.
+    if (hud?.phase === 'running') poki.gameplayStart();
+    setPaused(false);
+  }, [hud]);
+
   const togglePause = useCallback(() => {
     if (screen !== 'play' || !hud) return;
     if (hud.phase !== 'ready' && hud.phase !== 'running') return;
-    setPaused((p) => !p);
-  }, [screen, hud]);
+    if (paused) {
+      resumeGame();
+      return;
+    }
+    setPaused(true);
+  }, [screen, hud, paused, resumeGame]);
 
   useEscape(togglePause, screen === 'play' && !ad);
 
@@ -219,6 +232,18 @@ export default function App() {
               onMute={toggleMute}
             />
           )}
+          {screen === 'menu' && parkingChallenge && !challengeDismissed && (
+            <div className="absolute left-1/2 top-3 z-50 w-[min(92%,560px)] -translate-x-1/2 rounded-2xl border-2 border-white/30 bg-sky-950/95 px-4 py-3 text-center text-white shadow-xl">
+              <div className="font-display text-lg text-cyan-200">Friend parking challenge</div>
+              <div className="mt-0.5 text-xs text-white/75">
+                Level {parkingChallenge.levelIndex + 1} · {parkingChallenge.stars} stars · {Math.abs(parkingChallenge.angleErrDeg).toFixed(1)}° angle error
+              </div>
+              <div className="mt-2 flex justify-center gap-2">
+                <button onClick={() => startLevel(parkingChallenge.levelIndex)} className="rounded-full bg-cyan-300 px-4 py-1.5 text-sm font-bold text-slate-950">Try this bay</button>
+                <button onClick={() => setChallengeDismissed(true)} className="rounded-full bg-white/10 px-3 py-1.5 text-sm text-white/80">Dismiss</button>
+              </div>
+            </div>
+          )}
           {screen === 'levels' && <LevelSelect onPlay={startLevel} onBack={goMenu} />}
           {screen === 'garage' && <Garage onBack={goMenu} />}
 
@@ -257,7 +282,7 @@ export default function App() {
           )}
           {playing && paused && (
             <PauseOverlay
-              onResume={() => setPaused(false)}
+              onResume={resumeGame}
               onRestart={() => {
                 setPaused(false);
                 bridge.emit('cmd:restart');

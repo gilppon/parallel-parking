@@ -292,10 +292,10 @@ function TouchControls() {
         <HoldBtn k="right" className="w-[120px] h-[120px] text-[46px]">▶</HoldBtn>
       </div>
       <div className="absolute bottom-4 right-4 grid grid-cols-2 gap-3">
-        <HoldBtn k="handbrake" className="w-[120px] h-[76px] text-[20px] bg-pink-500/40">DRIFT</HoldBtn>
-        <HoldBtn k="up" className="w-[120px] h-[76px] text-[30px] bg-lime-400/40">▲</HoldBtn>
-        <HoldBtn k="boost" className="w-[120px] h-[76px] text-[20px] bg-orange-500/40">🚀</HoldBtn>
-        <HoldBtn k="down" className="w-[120px] h-[76px] text-[30px]">▼</HoldBtn>
+        <HoldBtn k="handbrake" className="w-[120px] h-[88px] text-[20px] bg-pink-500/40">DRIFT</HoldBtn>
+        <HoldBtn k="up" className="w-[120px] h-[88px] text-[30px] bg-lime-400/40">▲</HoldBtn>
+        <HoldBtn k="boost" className="w-[120px] h-[88px] text-[20px] bg-orange-500/40">🚀</HoldBtn>
+        <HoldBtn k="down" className="w-[120px] h-[88px] text-[30px]">▼</HoldBtn>
       </div>
     </>
   );

@@ -92,10 +92,12 @@ class PokiService {
   private sdk: PokiSDKApi | null = null;
   private provider: Provider = null;
   private playing = false;
+  private playingNotified = false;
   private loadingSent = false;
   /** the first frame beat the SDK handshake – flush the signal once init lands */
   private loadingPending = false;
   private initDone = false;
+  private loadingFinishedNotified = false;
   // start the frequency cap at boot so players get a few clean minutes first
   private lastMockAd = Date.now() - 20_000;
   private adRunning = false;
@@ -161,6 +163,7 @@ class PokiService {
   }
 
   private sendLoadingFinished() {
+    if (this.loadingFinishedNotified) return;
     if (this.provider === 'poki') this.sdk?.gameLoadingFinished();
     else if (this.provider === 'crazy') {
       try {
@@ -169,6 +172,8 @@ class PokiService {
         /* ignore */
       }
     }
+    this.loadingFinishedNotified = true;
+    this.notifyGameplayStart();
   }
 
   /**
@@ -186,28 +191,34 @@ class PokiService {
   }
 
   gameplayStart() {
-    if (this.playing) return;
     this.playing = true;
-    if (this.provider === 'poki') this.sdk?.gameplayStart();
-    else if (this.provider === 'crazy') {
-      try {
-        window.CrazyGames?.SDK?.game?.gameplayStart();
-      } catch {
-        /* ignore */
-      }
+    this.notifyGameplayStart();
+  }
+
+  private notifyGameplayStart() {
+    if (!this.initDone || !this.loadingFinishedNotified || !this.playing || this.playingNotified) return;
+    try {
+      if (this.provider === 'poki') this.sdk?.gameplayStart();
+      else if (this.provider === 'crazy') window.CrazyGames?.SDK?.game?.gameplayStart();
+      else return;
+      this.playingNotified = true;
+    } catch {
+      /* ignore */
     }
   }
 
   gameplayStop() {
-    if (!this.playing) return;
     this.playing = false;
-    if (this.provider === 'poki') this.sdk?.gameplayStop();
-    else if (this.provider === 'crazy') {
-      try {
+    if (!this.playingNotified) return;
+    try {
+      if (this.provider === 'poki') this.sdk?.gameplayStop();
+      else if (this.provider === 'crazy') {
         window.CrazyGames?.SDK?.game?.gameplayStop();
-      } catch {
-        /* ignore */
       }
+    } catch {
+      /* ignore */
+    } finally {
+      this.playingNotified = false;
     }
   }
 
@@ -290,6 +301,7 @@ class PokiService {
         );
         return ok;
       }
+      if (detectPortal() !== null) return false;
       audio.setAdMuted(true);
       return await PokiService.withTimeout(
         new Promise<boolean>((resolve) => bridge.emit('ad', { kind: 'rewarded', done: (r) => resolve(r) })),

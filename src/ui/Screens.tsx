@@ -3,6 +3,7 @@ import { audio } from '../game/AudioFx';
 import { bridge, type AdRequest } from '../game/bridge';
 import { LEVELS, SUPERCARS, carStarReq } from '../game/levels';
 import { poki } from '../game/PokiService';
+import { createParkingShareUrl } from '../game/share';
 import {
   BUMPER_COSTS,
   BUMPER_LEVELS,
@@ -46,11 +47,11 @@ export function MenuScreen({
   const nextMs = upcomingMilestone(save);
 
   return (
-    <div className="absolute inset-0 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-[#05060a] via-[#05060a]/85 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#05060a]/70 via-transparent to-[#05060a]/40" />
+    <div className="absolute inset-0 z-10 overflow-y-auto">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#05060a] via-[#05060a]/85 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#05060a]/70 via-transparent to-[#05060a]/40" />
 
-      <div className="absolute top-5 right-5 flex items-center gap-2">
+      <div className="absolute right-3 top-3 flex max-w-[calc(100vw-1.5rem)] flex-wrap justify-end gap-2 sm:right-5 sm:top-5">
         <button
           onClick={() => {
             const got = store.claimDaily();
@@ -87,32 +88,35 @@ export function MenuScreen({
         <Btn tone="ghost" size="sm" onClick={onMute}>{muted ? '🔇' : '🔊'}</Btn>
       </div>
 
-      <div className="absolute left-14 top-[70px] w-[640px] animate-slide-up">
-        <div className="font-display text-[19px] tracking-[0.32em] text-cyan-300 neon-text">
+      <div
+        className="absolute left-4 right-4 z-20 animate-slide-up sm:left-14 sm:right-auto sm:w-[min(640px,calc(100vw-7rem))]"
+        style={{ top: "clamp(3.5rem, 12dvh, 4.375rem)" }}
+      >
+        <div className="font-display text-xs tracking-[0.32em] text-cyan-300 neon-text sm:text-[19px]">
           EXTREME PARALLEL PARKING PHYSICS
         </div>
-        <h1 className="font-display text-[100px] leading-[0.98] mt-2 text-white text-outline">
+        <h1 className="mt-2 font-display leading-[0.98] text-white text-outline" style={{ fontSize: "clamp(30px, 9dvh, 100px)" }}>
           Alley <span className="text-lime-300 neon-text">Nightmare</span>
           <br />
           Parallel
           <br />
           Parking <span className="text-pink-400 neon-text">Master</span>
         </h1>
-        <p className="mt-4 text-[19px] text-white/80 leading-relaxed">
+        <p className="mt-2 text-xs text-white/80 leading-relaxed sm:mt-4 sm:text-[19px]">
           Not even <b className="text-amber-300">1cm</b> of clearance between supercars is tolerated.
           <br />
           Rocket Booster and handbrake drift. Park in <b className="text-lime-300">under 10 seconds</b>.
         </p>
 
-        <div className="mt-7 flex flex-wrap items-center gap-4">
-          <Btn size="lg" onClick={() => onPlay(next)} className="px-10">
+        <div className="mt-3 flex flex-wrap items-center gap-2 sm:mt-7 sm:gap-4">
+          <Btn size="lg" onClick={() => onPlay(next)} className="px-4 sm:px-10">
             ▶ {save.unlocked > 0 ? `Continue · STAGE ${next + 1}` : 'Start Game'}
           </Btn>
           <Btn tone="cyan" size="md" onClick={onLevels}>Stage Select</Btn>
           <Btn tone="pink" size="md" onClick={onGarage}>🔧 Garage</Btn>
         </div>
 
-        <div className="mt-7 glass rounded-2xl p-4 inline-flex flex-wrap gap-x-5 gap-y-2 items-center text-[14px] text-white/85 max-w-[600px]">
+        <div className="mt-4 glass rounded-2xl p-3 inline-flex flex-wrap gap-x-4 gap-y-2 items-center text-xs text-white/85 sm:mt-7 sm:p-4 sm:text-[14px] sm:max-w-[600px]">
           <span className="flex items-center gap-2"><Keycap>↑</Keycap><Keycap>↓</Keycap> Gas · Brake / Reverse</span>
           <span className="flex items-center gap-2"><Keycap>←</Keycap><Keycap>→</Keycap> Steer</span>
           <span className="flex items-center gap-2"><Keycap wide>SPACE</Keycap> Drift</span>
@@ -121,7 +125,7 @@ export function MenuScreen({
         </div>
       </div>
 
-      <div className="absolute left-14 bottom-6 flex items-center gap-6 text-[14px] text-white/60">
+      <div className="absolute bottom-3 left-4 right-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/60 sm:bottom-6 sm:left-14 sm:right-auto sm:gap-6 sm:text-[14px]">
         <span>★ {totalStars_} / {LEVELS.length * 3}</span>
         <span>💥 {save.fails} lifetime crashes</span>
         <button
@@ -444,11 +448,11 @@ export function Garage({ onBack }: { onBack: () => void }) {
         {/* Rewarded ad */}
         <section className="rounded-2xl bg-gradient-to-r from-amber-500/20 to-pink-500/20 border border-amber-300/30 p-4 flex items-center justify-between">
           <div>
-            <div className="font-display text-[20px] text-amber-200">📺 Free Coins</div>
+            <div className="font-display text-[20px] text-amber-200">🎬 Ad Reward · Free Coins</div>
             <div className="text-[13px] text-white/70">Watch a short ad for 200 coins.</div>
           </div>
           <Btn
-            tone="lime"
+            tone="amber"
             size="sm"
             disabled={adBusy}
             onClick={async () => {
@@ -461,7 +465,7 @@ export function Garage({ onBack }: { onBack: () => void }) {
               }
             }}
           >
-            Get +200
+            🎬 Get +200
           </Btn>
         </section>
       </div>
@@ -485,7 +489,19 @@ export function ResultOverlay({
 }) {
   const [doubled, setDoubled] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [shareUrl, setShareUrl] = useState('');
+  const [shareMessage, setShareMessage] = useState('');
   const lv = LEVELS[result.levelIndex];
+
+  useEffect(() => {
+    let active = true;
+    void createParkingShareUrl(result).then((url) => {
+      if (active) setShareUrl(url);
+    });
+    return () => {
+      active = false;
+    };
+  }, [result]);
 
   return (
     <div className="absolute inset-0 grid place-items-center bg-black/55 backdrop-blur-[3px]">
@@ -515,6 +531,34 @@ export function ResultOverlay({
           </div>
         </div>
 
+        <button
+          onClick={async () => {
+            const text = `Can you park better? I earned ${result.stars} stars with ${Math.abs(result.angleErrDeg).toFixed(1)}° angle error at Level ${result.levelIndex + 1}.`;
+            const url = shareUrl || window.location.href;
+            try {
+              if (navigator.share) {
+                await navigator.share({ title: 'Perfect Park challenge', text, url });
+                setShareMessage('Challenge shared! 🚗');
+                return;
+              }
+              await navigator.clipboard.writeText(`${text} ${url}`);
+              setShareMessage('Challenge link copied! Send it to a friend 🚗');
+            } catch (error) {
+              if (error instanceof DOMException && error.name === 'AbortError') return;
+              try {
+                await navigator.clipboard.writeText(`${text} ${url}`);
+                setShareMessage('Challenge link copied! Send it to a friend 🚗');
+              } catch {
+                setShareMessage('Copy the game link from your browser to challenge a friend.');
+              }
+            }
+          }}
+          className="mt-4 w-full rounded-xl border border-cyan-200/30 bg-cyan-300/10 px-3 py-2 text-sm font-semibold text-cyan-100 hover:bg-cyan-300/20"
+        >
+          🚗 Challenge a friend on this parking bay
+        </button>
+        {shareMessage && <div aria-live="polite" className="mt-2 text-xs text-lime-200">{shareMessage}</div>}
+
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           {!isLast ? (
             <Btn size="md" onClick={onNext}>Next Stage ▶</Btn>
@@ -537,7 +581,7 @@ export function ResultOverlay({
               }
             }}
           >
-            📺 2× Coins
+            🎬 Watch Ad · 2× Coins
           </Btn>
           <Btn tone="ghost" size="md" onClick={onMenu}>Main Menu</Btn>
         </div>
