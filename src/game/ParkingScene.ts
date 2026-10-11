@@ -781,13 +781,14 @@ export class ParkingScene extends Phaser.Scene {
     });
 
     const cam = this.cameras.main;
-    cam.flash(260, 60, 255, 140);
+    cam.flash(320, 80, 255, 160);
+    cam.shake(220, 0.005);
     const cx = body.position.x;
     const cy = body.position.y;
-    this.confetti.explode(60, cx, cy);
-    this.time.delayedCall(180, () => this.confetti.explode(50, cx - 120, cy));
-    this.time.delayedCall(320, () => this.confetti.explode(50, cx + 120, cy));
-    this.popText(cx, cy - 30, perfect ? 'PERFECT!' : 'PARKED!', '#7dff2a');
+    this.confetti.explode(75, cx, cy);
+    this.time.delayedCall(160, () => this.confetti.explode(60, cx - 120, cy));
+    this.time.delayedCall(300, () => this.confetti.explode(60, cx + 120, cy));
+    this.popText(cx, cy - 35, perfect ? '👑 PERFECT PARK! 👑' : 'PARKED! 🎯', '#7dff2a');
 
     const payload: ResultPayload = {
       kind: 'success',
@@ -964,18 +965,20 @@ export class ParkingScene extends Phaser.Scene {
     g.clear();
     const z = this.level.zone;
     const r = this.report;
-    const pulse = 0.5 + 0.5 * Math.sin(time / 260);
+    const pulse = 0.5 + 0.5 * Math.sin(time / 220);
     let col = 0x38ff7a;
-    let fillA = 0.14 + pulse * 0.08;
+    let fillA = 0.15 + pulse * 0.09;
     let hold = 0;
     if (r) {
       hold = r.holdProgress;
       if (r.inside && r.aligned) {
-        col = 0x9dff3a;
-        fillA = 0.3 + hold * 0.4;
+        col = hold > 0.6 ? 0xffd700 : 0x00ff88;
+        fillA = 0.32 + hold * 0.45;
       } else if (r.inside) {
-        col = 0xffd21f;
-        fillA = 0.26;
+        col = 0xffa502;
+        fillA = 0.28;
+      } else {
+        col = 0x2ed573;
       }
     }
     const c = Math.cos(z.angle);
@@ -992,27 +995,34 @@ export class ParkingScene extends Phaser.Scene {
       const ly = (sy * z.h) / 2;
       return { x: z.x + lx * c - ly * s, y: z.y + lx * s + ly * c };
     });
+
+    // 1. Soft glowing fill
     g.fillStyle(col, fillA).fillPoints(pts, true);
-    g.lineStyle(3, col, 0.55 + pulse * 0.4).strokePoints(pts, true);
-    // corner ticks
-    g.lineStyle(5, col, 1);
+
+    // 2. Cyberpunk Neon outer border
+    g.lineStyle(hold > 0 ? 5 : 3.5, col, 0.65 + pulse * 0.35).strokePoints(pts, true);
+
+    // 3. Thick L-Corner Brackets
+    g.lineStyle(6, col, 1);
     pts.forEach((p, i) => {
       const n = pts[(i + 1) % 4];
       const pr = pts[(i + 3) % 4];
       const l1 = Math.hypot(n.x - p.x, n.y - p.y) || 1;
       const l2 = Math.hypot(pr.x - p.x, pr.y - p.y) || 1;
-      const k = 16;
+      const k = 22;
       g.beginPath();
       g.moveTo(p.x + ((n.x - p.x) / l1) * k, p.y + ((n.y - p.y) / l1) * k);
       g.lineTo(p.x, p.y);
       g.lineTo(p.x + ((pr.x - p.x) / l2) * k, p.y + ((pr.y - p.y) / l2) * k);
       g.strokePath();
     });
+
+    // 4. Locking progress border
     if (hold > 0) {
-      g.lineStyle(6, 0xffffff, hold);
+      g.lineStyle(7, 0xffffff, Math.min(1, hold * 1.2));
       g.strokePoints(pts, true);
     }
-    this.zoneLabel.setAlpha(this.report?.inside ? 0.12 : 0.3 + pulse * 0.15);
+    this.zoneLabel.setAlpha(this.report?.inside ? 0.15 : 0.35 + pulse * 0.18);
   }
 
   private emitHud(_force: boolean) {
